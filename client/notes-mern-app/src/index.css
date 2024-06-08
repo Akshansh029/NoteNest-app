@@ -22,5 +22,5 @@
 }
 
 .btn-primary {
-  @apply w-full text-sm bg-primary text-white p-2 rounded my-1 hover:bg-blue-600;
+  @apply w-full text-sm bg-primary text-white p-2 rounded my-2 hover:bg-blue-600;
 }

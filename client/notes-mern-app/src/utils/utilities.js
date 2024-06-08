@@ -3,9 +3,9 @@ function validateEmail(email) {
   return emailRegex.test(email);
 }
 
-function validateUsername(username) {
-  const usernameRegex = /^(?=.{3,16}$)(?![-_])[a-zA-Z0-9-_]+(?<![-_])$/;
-  return usernameRegex.test(username);
-}
+// function validateUsername(username) {
+//   const usernameRegex = /^(?=.{3,16}$)(?![-_])[a-zA-Z0-9-_]+(?<![-_])$/;
+//   return usernameRegex.test(username);
+// }
 
-export default { validateEmail, validateUsername };
+export default validateEmail;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import PasswordField from "../../components/PasswordField/PasswordField";
-import { validateUsername, validateEmail } from "../../utils/utilities";
+import validateEmail from "../../utils/utilities";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -14,8 +14,8 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    if (!validateUsername(name)) {
-      setError("Please provide a valid email address");
+    if (!name) {
+      setError("Please enter a username");
       return;
     }
 
@@ -49,7 +49,7 @@ const Signup = () => {
             />
             <input
               type="email"
-              placeholder="Username"
+              placeholder="Email"
               className="input-box"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -66,13 +66,13 @@ const Signup = () => {
             )}
 
             <button type="submit" className="btn-primary">
-              Login
+              Signup
             </button>
 
             <p className="text-sm text-center mt-4">
-              Don't have an account{" "}
-              <Link to="/signup" className="text-blue-600 underline">
-                Create an account
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-600 underline">
+                Login
               </Link>
             </p>
           </form>

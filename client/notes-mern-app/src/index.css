@@ -28,3 +28,7 @@
 .icon-btn {
   @apply text-xl text-slate-400 cursor-pointer;
 }
+
+.input-label {
+  @apply text-sm text-slate-700 font-medium;
+}

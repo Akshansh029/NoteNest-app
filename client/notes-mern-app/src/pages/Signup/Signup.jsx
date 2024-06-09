@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import PasswordField from "../../components/PasswordField/PasswordField";
-import validateEmail from "../../utils/utilities";
+import validateEmail from "../../utils/validateEmail";
 
 const Signup = () => {
   const [name, setName] = useState("");

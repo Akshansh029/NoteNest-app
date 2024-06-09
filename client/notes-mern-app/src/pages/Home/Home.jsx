@@ -30,7 +30,7 @@ const Home = () => {
             title="Meeting with Bosco at 5pm"
             date="16 June 2024"
             tags="#meeting"
-            content="Will meet Bosco in bilaspurat 5 pm and will hangout for sometime"
+            content="Will meet Bosco in bilaspur at 5 pm and will hangout for sometime"
             isPinned={true}
             deleteNote={() => {}}
             onPinNote={() => {}}
@@ -54,7 +54,7 @@ const Home = () => {
         overlayClassName="fixed inset-0 bg-black bg-opacity-20"
         contentLabel="Add/Edit Note"
       >
-        <AddEditNotes />
+        <AddEditNotes type={openModal.type} noteData={openModal.data} />
       </Modal>
     </>
   );

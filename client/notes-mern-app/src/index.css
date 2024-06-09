@@ -30,5 +30,5 @@
 }
 
 .input-label {
-  @apply text-sm text-slate-700 font-medium;
+  @apply text-sm text-slate-800 font-medium;
 }

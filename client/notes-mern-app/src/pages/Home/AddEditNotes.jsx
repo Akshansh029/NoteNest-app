@@ -5,6 +5,19 @@ const AddEditNotes = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
+  const [error, setError] = useState("");
+
+  const handleAddNote = () => {
+    if (!title) {
+      setError("Please enter the title");
+      return;
+    }
+    if (!content) {
+      setError("Please enter the content");
+      return;
+    }
+    setError("");
+  };
 
   return (
     <div>
@@ -33,7 +46,19 @@ const AddEditNotes = () => {
         <label className="input-label">TAGS</label>
         <TagInput tags={tags} setTags={setTags} />
       </div>
-      <button className="btn-primary">Add</button>
+
+      {error && (
+        <p className="text-sm text-red-500 font-medium mt-2">{error}</p>
+      )}
+
+      <button
+        className="btn-primary"
+        onClick={() => {
+          handleAddNote();
+        }}
+      >
+        Add
+      </button>
     </div>
   );
 };

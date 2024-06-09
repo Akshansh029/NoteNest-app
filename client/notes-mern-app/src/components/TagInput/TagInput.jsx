@@ -46,7 +46,7 @@ const TagInput = ({ tags, setTags }) => {
           <MdAdd className="text-2xl text-blue-700 hover:text-white" />
         </button>
       </div>
-      {tags.length > 0 && (
+      {tags?.length > 0 && (
         <div className="flex items-center gap-2 flex-wrap mt-2">
           {tags.map((tag, index) => (
             <span

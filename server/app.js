@@ -39,7 +39,7 @@ app.post("/create-account", async (req, res) => {
 
   if (isUser) return res.json({ error: true, message: "User already exists" });
 
-  const user = new User({ fullName, email, password });
+  const user = new User({ fullName, email, password, createdOn });
   await user.save();
 
   const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_KEY, {
@@ -51,6 +51,30 @@ app.post("/create-account", async (req, res) => {
     user,
     accessToken,
     message: "Registration Successful",
+  });
+});
+
+//Get user API
+app.get("/get-user", authenticateToken, async (req, res) => {
+  const { user } = req.user;
+
+  const theUser = await User.findOne({ _id: user._id });
+
+  if (!theUser) {
+    return res
+      .status(401)
+      .json({ error: true, message: "Could not get the user" });
+  }
+
+  return res.status(200).json({
+    error: false,
+    user: {
+      fullName: theUser.fullName,
+      email: theUser.email,
+      _id: theUser._id,
+      createdOn: theUser.createdOn,
+    },
+    message: "Retrieved user info successfully",
   });
 });
 
@@ -201,9 +225,10 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 });
 
 //Pin notes API
-app.put("/pin-notes/:noteId", authenticateToken, async (req, res) => {
+app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
   const { user } = req.user;
   const { noteId } = req.params;
+  const { isPinned } = req.body;
 
   try {
     const note = await Note.findOne({ _id: noteId, userId: user._id });
@@ -214,7 +239,7 @@ app.put("/pin-notes/:noteId", authenticateToken, async (req, res) => {
         message: "Note not found",
       });
 
-    if (isPinned) note.isPinned = isPinned;
+    note.isPinned = isPinned || false;
 
     await note.save();
 

@@ -16,9 +16,9 @@ const { authenticateToken } = require("./utilities");
 app.use(express.json());
 app.use(cors({ origin: "*" }));
 
-app.get("/", (req, res) => {
-  res.json({ data: "Hello world" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ data: "Hello world" });
+// });
 
 // Create account API
 app.post("/create-account", async (req, res) => {
@@ -91,7 +91,8 @@ app.post("/login", async (req, res) => {
 
   const userInfo = await User.findOne({ email });
 
-  if (!userInfo) return res.status(400).json({ message: "User not found" });
+  if (!userInfo)
+    return res.status(400).json({ message: "Invalid credentials" });
   if (userInfo.email === email && userInfo.password === password) {
     const user = { user: userInfo };
     const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_KEY, {

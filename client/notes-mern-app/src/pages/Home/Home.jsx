@@ -3,7 +3,9 @@ import CardNote from "../../components/CardNote/CardNote";
 import AddEditNotes from "./AddEditNotes";
 import Modal from "react-modal";
 import { FaPlus } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Home = () => {
   const [openModal, setOpenModal] = useState({
@@ -20,9 +22,34 @@ const Home = () => {
     });
   };
 
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+
+  //Get userInfo API call
+  const getUserInfo = async () => {
+    try {
+      const response = await axiosInstance.get("/get-user");
+
+      if (response.data && response.data.user) {
+        setUserInfo(response.data.user);
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        localStorage.clear();
+        navigate("/login");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+
+    return () => {};
+  }, []);
+
   return (
     <>
-      <Navbar />
+      <Navbar userInfo={userInfo} />
 
       <div className="container mx-auto">
         <div className="grid grid-cols-3 gap-4 mt-8">

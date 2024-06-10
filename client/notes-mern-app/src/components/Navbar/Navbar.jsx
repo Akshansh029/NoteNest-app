@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import ProfileInfo from "../ProfileInfo/ProfileInfo";
 import { useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar/Searchbar";
 
-const Navbar = () => {
+const Navbar = ({ userInfo }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Navbar = () => {
         onLogout={() => {
           navigate("/login");
         }}
+        userInfo={userInfo}
       />
     </div>
   );

@@ -4,20 +4,25 @@ import ProfileInfo from "../ProfileInfo/ProfileInfo";
 import { useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar/Searchbar";
 
-const Navbar = ({ userInfo }) => {
+const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const navigate = useNavigate();
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    if (searchQuery) {
+      onSearchNote(searchQuery);
+    }
+  };
 
   const clearSearch = () => {
     setSearchQuery("");
+    handleClearSearch();
   };
 
   return (
     <div className="flex justify-between items-center py-2 px-6 bg-white drop-shadow">
-      <h2 className="text-2xl text-black py-2 font-semibold">Notes</h2>
+      <h2 className="text-2xl text-black py-2 font-semibold">NoteNest</h2>
 
       <Searchbar
         value={searchQuery}

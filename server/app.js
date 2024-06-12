@@ -259,7 +259,7 @@ app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
 
 //Search notes API
 app.get("/search-notes/", authenticateToken, async (req, res) => {
-  const { user } = req.user;
+  const { user } = req.user.user;
   const { query } = req.query;
 
   if (!query) {

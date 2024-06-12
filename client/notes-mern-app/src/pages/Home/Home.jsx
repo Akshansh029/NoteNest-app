@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Navbar from "../../components/Navbar/Navbar";
 import CardNote from "../../components/CardNote/CardNote";
@@ -10,11 +11,12 @@ import axiosInstance from "../../utils/axiosInstance";
 import Toast from "../../components/ToastMessage/ToastMessage";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import NotesPng from "../../assets/NotesPng.png";
-// import NotesSvg from "../../assets/NotesSvg.svg";
+import NoDataPng from "../../assets/no-data-png.png";
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
+  const [isSearch, setIsSearch] = useState(false);
   const [showToastMsg, setShowToastMsg] = useState({
     isShown: false,
     message: "",
@@ -52,6 +54,11 @@ const Home = () => {
     });
   };
 
+  const handleClearSearch = () => {
+    setIsSearch(false);
+    getAllNotes();
+  };
+
   const handleEdit = (noteDetails) => {
     setOpenModal({ isShown: true, data: noteDetails, type: "edit" });
   };
@@ -86,7 +93,7 @@ const Home = () => {
     }
   };
 
-  //Delete note
+  //Delete note integration
   const deleteNote = async (data) => {
     const noteId = data._id;
 
@@ -110,6 +117,22 @@ const Home = () => {
     }
   };
 
+  //Search API integration
+  const onSearchNote = async (query) => {
+    try {
+      const response = await axiosInstance.get("/search-notes/", {
+        params: { query },
+      });
+
+      if (response.data && response.data.notes) {
+        setIsSearch(true);
+        setAllNotes(response.data.notes);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getAllNotes();
     const user = localStorage.getItem("user");
@@ -120,7 +143,11 @@ const Home = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo} />
+      <Navbar
+        userInfo={userInfo}
+        onSearchNote={onSearchNote}
+        handleClearSearch={handleClearSearch}
+      />
 
       <div className="container mx-auto my-8">
         {allNotes.length > 0 ? (
@@ -143,13 +170,19 @@ const Home = () => {
           </div>
         ) : (
           <EmptyCard
-            noNotesImg={NotesPng}
+            notesImg={isSearch ? NoDataPng : NotesPng}
             message={
-              <span className="flex items-center justify-center gap-1">
-                No notes yet! Click{" "}
-                <span className="font-semibold text-2xl">+</span> to capture
-                your first thought!
-              </span>
+              isSearch ? (
+                <span className="flex items-center justify-center gap-1">
+                  Oops! Can't find any matches for your search.
+                </span>
+              ) : (
+                <span className="flex items-center justify-center gap-1">
+                  No notes yet! Click{" "}
+                  <span className="font-semibold text-2xl">+</span> to capture
+                  your first thought!
+                </span>
+              )
             }
           />
         )}

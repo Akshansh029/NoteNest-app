@@ -242,7 +242,7 @@ app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
         message: "Note not found",
       });
 
-    note.isPinned = isPinned || false;
+    note.isPinned = isPinned;
 
     await note.save();
 

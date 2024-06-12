@@ -24,7 +24,9 @@ const CardNote = ({
         </div>
 
         <MdOutlinePushPin
-          className={`icon-btn ${isPinned ? "text-primary" : "text-slate-400"}`}
+          className={`icon-btn ${
+            isPinned ? "text-primary" : "text-slate-400"
+          } hover:text-primary`}
           onClick={onPinNote}
         />
       </div>

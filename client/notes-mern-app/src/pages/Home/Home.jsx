@@ -133,6 +133,33 @@ const Home = () => {
     }
   };
 
+  //Pin note API integration
+  const pinNote = async (noteData) => {
+    const noteId = noteData._id;
+
+    try {
+      const response = await axiosInstance.put("/pin-note/" + noteId, {
+        isPinned: !noteData.isPinned,
+      });
+
+      if (response.data && response.data.note) {
+        console.log("Note updated successfully:", response.data.note);
+        showToastMessage("Note updated successfully", "edit");
+        getAllNotes();
+        closeModal();
+      }
+    } catch (error) {
+      console.error("Error updating note:", error);
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        console.log(error.response.data.message);
+      }
+    }
+  };
+
   useEffect(() => {
     getAllNotes();
     const user = localStorage.getItem("user");
@@ -164,7 +191,9 @@ const Home = () => {
                 deleteNote={() => {
                   deleteNote(item);
                 }}
-                onPinNote={() => {}}
+                onPinNote={() => {
+                  pinNote(item);
+                }}
               />
             ))}
           </div>

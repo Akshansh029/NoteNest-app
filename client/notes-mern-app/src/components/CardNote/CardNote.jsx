@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { MdOutlinePushPin } from "react-icons/md";
 import { MdDelete, MdEdit } from "react-icons/md";
+import moment from "moment";
 
 const CardNote = ({
   title,
@@ -17,7 +18,9 @@ const CardNote = ({
       <div className="flex items-center justify-between">
         <div>
           <h5 className="text-base font-medium">{title}</h5>
-          <span className="text-xs text-slate-500">{date}</span>
+          <span className="text-xs text-slate-500">
+            {moment(date).format("Do MMM YYYY")}
+          </span>
         </div>
 
         <MdOutlinePushPin

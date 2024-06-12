@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Toast from "../../components/ToastMessage/ToastMessage";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
+import NotesPng from "../../assets/NotesPng.png";
+// import NotesSvg from "../../assets/NotesSvg.svg";
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -76,7 +78,7 @@ const Home = () => {
       const response = await axiosInstance.get("/get-all-notes");
 
       if (response.data && response.data.notes) {
-        console.log("Fetched notes:", response.data.notes);
+        // console.log("Fetched notes:", response.data.notes);
         setAllNotes(response.data.notes);
       }
     } catch (error) {
@@ -140,7 +142,16 @@ const Home = () => {
             ))}
           </div>
         ) : (
-          <EmptyCard />
+          <EmptyCard
+            noNotesImg={NotesPng}
+            message={
+              <span className="flex items-center justify-center gap-1">
+                No notes yet! Click{" "}
+                <span className="font-semibold text-2xl">+</span> to capture
+                your first thought!
+              </span>
+            }
+          />
         )}
       </div>
 

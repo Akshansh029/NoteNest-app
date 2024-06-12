@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import Toast from "../../components/ToastMessage/ToastMessage";
+import EmptyCard from "../../components/EmptyCard/EmptyCard";
 
 const Home = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -90,7 +91,7 @@ const Home = () => {
     try {
       const response = await axiosInstance.delete("/delete-note/" + noteId);
 
-      if (response.data && response.data.note) {
+      if (response.data && !response.data.error) {
         // console.log("Note deleted successfully:", response.data.note);
         showToastMessage("Note deleted successfully", "delete");
         getAllNotes();
@@ -120,23 +121,27 @@ const Home = () => {
       <Navbar userInfo={userInfo} />
 
       <div className="container mx-auto my-8">
-        <div className="grid grid-cols-3 gap-4 mt-8">
-          {allNotes.map((item) => (
-            <CardNote
-              key={item._id}
-              title={item.title}
-              date={item.createdOn}
-              tags={item.tags}
-              content={item.content}
-              isPinned={item.isPinned}
-              onEdit={() => handleEdit(item)}
-              deleteNote={() => {
-                deleteNote;
-              }}
-              onPinNote={() => {}}
-            />
-          ))}
-        </div>
+        {allNotes.length > 0 ? (
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            {allNotes.map((item) => (
+              <CardNote
+                key={item._id}
+                title={item.title}
+                date={item.createdOn}
+                tags={item.tags}
+                content={item.content}
+                isPinned={item.isPinned}
+                onEdit={() => handleEdit(item)}
+                deleteNote={() => {
+                  deleteNote(item);
+                }}
+                onPinNote={() => {}}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyCard />
+        )}
       </div>
 
       <button

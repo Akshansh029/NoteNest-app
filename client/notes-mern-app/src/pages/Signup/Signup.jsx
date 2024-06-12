@@ -1,9 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import PasswordField from "../../components/PasswordField/PasswordField";
 import validateEmail from "../../utils/validateEmail";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -11,7 +12,9 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSignup = (e) => {
+  const navigate = useNavigate();
+
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (!name) {
@@ -29,6 +32,36 @@ const Signup = () => {
       return;
     }
     setError("");
+
+    //Signup API integration
+    try {
+      const response = await axiosInstance.post("/create-account", {
+        fullName: name,
+        email: email,
+        password: password,
+      });
+
+      if (response.data && response.data.error) {
+        setError(response.data.error);
+        return;
+      }
+
+      //Handling successful signup response
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        setError(error.response.data.message);
+      } else {
+        setError("An unexpected error occured");
+      }
+    }
   };
 
   return (

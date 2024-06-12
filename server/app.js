@@ -39,7 +39,7 @@ app.post("/create-account", async (req, res) => {
 
   if (isUser) return res.json({ error: true, message: "User already exists" });
 
-  const user = new User({ fullName, email, password, createdOn });
+  const user = new User({ fullName, email, password });
   await user.save();
 
   const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_KEY, {
@@ -56,7 +56,7 @@ app.post("/create-account", async (req, res) => {
 
 //Get user API
 app.get("/get-user", authenticateToken, async (req, res) => {
-  const { user } = req.user;
+  const { user } = req.user.user;
 
   const theUser = await User.findOne({ _id: user._id });
 
@@ -112,9 +112,10 @@ app.post("/login", async (req, res) => {
 // Add note API
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
-  const { user } = req.user;
+  const { user } = req.user.user;
 
   console.log("Received request:", { title, content, tags, user });
+  // console.log(user._id);
 
   if (!title)
     return res.status(400).json({ error: true, message: "Title is required" });
@@ -148,7 +149,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
   const { title, content, tags, isPinned } = req.body;
-  const { user } = req.user;
+  const { user } = req.user.user;
 
   if (!title && !content && !tags) {
     return res.status(400).json({
@@ -186,10 +187,11 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 
 //Get all notes API
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
-  const { user } = req.user;
+  const { user } = req.user.user;
+  const userId = user._id;
 
   try {
-    const notes = await Note.find({ userId: user._id }).sort({ isPinned: -1 });
+    const notes = await Note.find({ userId }).sort({ isPinned: -1 });
 
     return res.status(200).json({
       error: false,
@@ -204,7 +206,7 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
 
 //Delete note API
 app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
-  const { user } = req.user;
+  const { user } = req.user.user;
   const { noteId } = req.params;
 
   try {
@@ -227,7 +229,7 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 
 //Pin notes API
 app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
-  const { user } = req.user;
+  const { user } = req.user.user;
   const { noteId } = req.params;
   const { isPinned } = req.body;
 

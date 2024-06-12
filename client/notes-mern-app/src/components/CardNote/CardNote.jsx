@@ -8,6 +8,7 @@ const CardNote = ({
   tags,
   content,
   isPinned,
+  onEdit,
   deleteNote,
   onPinNote,
 }) => {
@@ -26,10 +27,19 @@ const CardNote = ({
       </div>
       <p className="text-sm mt-2 text-slate-600">{content?.slice(0, 60)}...</p>
       <div className="flex items-center justify-between mt-2">
-        <div className="text-xs text-slate-400">{tags}</div>
+        <div className="flex gap-2">
+          {tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-slate-200 text-slate-800 text-xs font-medium py-1 px-2 rounded-sm"
+            >
+              {`#${tag}`}
+            </span>
+          ))}
+        </div>
 
         <div className="flex items-center gap-2">
-          <MdEdit className="icon-btn hover:text-green-600" />
+          <MdEdit className="icon-btn hover:text-green-600" onClick={onEdit} />
           <MdDelete
             className="icon-btn hover:text-red-600"
             onClick={deleteNote}

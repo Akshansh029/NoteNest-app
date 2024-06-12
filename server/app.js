@@ -115,7 +115,6 @@ app.post("/add-note", authenticateToken, async (req, res) => {
   const { user } = req.user.user;
 
   console.log("Received request:", { title, content, tags, user });
-  // console.log(user._id);
 
   if (!title)
     return res.status(400).json({ error: true, message: "Title is required" });
@@ -192,7 +191,6 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
 
   try {
     const notes = await Note.find({ userId }).sort({ isPinned: -1 });
-
     return res.status(200).json({
       error: false,
       notes,

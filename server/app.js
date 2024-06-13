@@ -42,9 +42,13 @@ app.post("/create-account", async (req, res) => {
   const user = new User({ fullName, email, password });
   await user.save();
 
-  const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_KEY, {
-    expiresIn: "3600m",
-  });
+  const accessToken = jwt.sign(
+    { user: { user } },
+    process.env.ACCESS_TOKEN_KEY,
+    {
+      expiresIn: "3600m",
+    }
+  );
 
   res.json({
     error: false,
@@ -56,26 +60,39 @@ app.post("/create-account", async (req, res) => {
 
 //Get user API
 app.get("/get-user", authenticateToken, async (req, res) => {
-  const { user } = req.user.user;
+  // const user = req.user?.user?.user;
+  const user = req.user;
+  console.log(user);
 
-  const theUser = await User.findOne({ _id: user._id });
-
-  if (!theUser) {
+  if (!user || !user._id) {
     return res
       .status(401)
       .json({ error: true, message: "Could not get the user" });
   }
 
-  return res.status(200).json({
-    error: false,
-    user: {
-      fullName: theUser.fullName,
-      email: theUser.email,
-      _id: theUser._id,
-      createdOn: theUser.createdOn,
-    },
-    message: "Retrieved user info successfully",
-  });
+  try {
+    const theUser = await User.findOne({ _id: user._id });
+
+    if (!theUser) {
+      return res
+        .status(401)
+        .json({ error: true, message: "Could not get the user" });
+    }
+
+    return res.status(200).json({
+      error: false,
+      user: {
+        fullName: theUser.fullName,
+        email: theUser.email,
+        _id: theUser._id,
+        createdOn: theUser.createdOn,
+      },
+      message: "Retrieved user info successfully",
+    });
+  } catch (error) {
+    console.error("Error retrieving user:", error.message);
+    res.status(500).json({ error: true, message: "Internal server error" });
+  }
 });
 
 // Login API
@@ -112,7 +129,8 @@ app.post("/login", async (req, res) => {
 // Add note API
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
-  const { user } = req.user.user;
+  // const { user } = req.user ? req.user : req;
+  const user = req.user;
 
   console.log("Received request:", { title, content, tags, user });
 
@@ -148,7 +166,7 @@ app.post("/add-note", authenticateToken, async (req, res) => {
 app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
   const { title, content, tags, isPinned } = req.body;
-  const { user } = req.user.user;
+  const user = req.user;
 
   if (!title && !content && !tags) {
     return res.status(400).json({
@@ -186,8 +204,8 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 
 //Get all notes API
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
-  const { user } = req.user.user;
-  const userId = user._id;
+  const userId = req.user._id;
+  // console.log("User ID from token:", userId);
 
   try {
     const notes = await Note.find({ userId }).sort({ isPinned: -1 });
@@ -204,7 +222,7 @@ app.get("/get-all-notes", authenticateToken, async (req, res) => {
 
 //Delete note API
 app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
-  const { user } = req.user.user;
+  const user = req.user;
   const { noteId } = req.params;
 
   try {
@@ -227,7 +245,7 @@ app.delete("/delete-note/:noteId", authenticateToken, async (req, res) => {
 
 //Pin notes API
 app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
-  const { user } = req.user.user;
+  const user = req.user;
   const { noteId } = req.params;
   const { isPinned } = req.body;
 
@@ -257,7 +275,7 @@ app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
 
 //Search notes API
 app.get("/search-notes/", authenticateToken, async (req, res) => {
-  const { user } = req.user.user;
+  const user = req.user;
   const { query } = req.query;
 
   if (!query) {

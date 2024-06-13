@@ -5,12 +5,34 @@ import Navbar from "../../components/Navbar/Navbar";
 import PasswordField from "../../components/PasswordField/PasswordField";
 import validateEmail from "../../utils/validateEmail";
 import axiosInstance from "../../utils/axiosInstance";
+import Toast from "../../components/ToastMessage/ToastMessage";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showToastMsg, setShowToastMsg] = useState({
+    isShown: false,
+    message: "",
+    type: "",
+  });
+
+  const showToastMessage = (message, type) => {
+    setShowToastMsg({
+      isShown: true,
+      message,
+      type,
+    });
+  };
+
+  const handleCloseToast = () => {
+    setShowToastMsg({
+      isShown: false,
+      message: "",
+      type: "",
+    });
+  };
 
   const navigate = useNavigate();
 
@@ -49,7 +71,13 @@ const Signup = () => {
       //Handling successful signup response
       if (response.data && response.data.accessToken) {
         localStorage.setItem("token", response.data.accessToken);
-        navigate("/dashboard");
+        showToastMessage(
+          "User registered successfully, please login into your account",
+          "edit"
+        );
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       }
     } catch (error) {
       if (
@@ -69,7 +97,7 @@ const Signup = () => {
       <Navbar />
 
       <div className="flex justify-center items-center mt-28">
-        <div className="w-96 border rounded bg-white px-7 py-10">
+        <div className="w-96 border-2 border-slate-300 rounded bg-white px-7 py-10">
           <form onSubmit={handleSignup} className="">
             <h4 className="text-2xl mb-7">Signup</h4>
 
@@ -111,6 +139,12 @@ const Signup = () => {
           </form>
         </div>
       </div>
+      <Toast
+        isShown={showToastMsg.isShown}
+        message={showToastMsg.message}
+        type={showToastMsg.type}
+        onClose={handleCloseToast}
+      />
     </>
   );
 };

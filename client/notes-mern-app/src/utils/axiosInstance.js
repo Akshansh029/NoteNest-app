@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
   headers: {
-    "Connection-type": "application/json",
+    "Content-type": "application/json",
   },
 });
 
@@ -15,6 +15,7 @@ axiosInstance.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    // console.log("request headers: ", config.headers);
     return config;
   },
   (error) => {

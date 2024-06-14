@@ -6,6 +6,11 @@ export default {
       colors: {
         primary: "#2196f3",
         seconday: "EF863E",
+        darkBg: "#070F2B",
+        darkNav: "#1B1A55",
+      },
+      boxShadow: {
+        custom: "0px 0px 2px 2px rgba(153,153,153,1)",
       },
     },
   },

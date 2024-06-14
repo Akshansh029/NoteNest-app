@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Navbar from "../../components/Navbar/Navbar";
@@ -13,7 +14,7 @@ import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import NotesPng from "../../assets/NotesPng.png";
 import NoDataPng from "../../assets/no-data-png.png";
 
-const Home = () => {
+const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
@@ -169,18 +170,21 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <div className={` ${isDarkMode ? "bg-darkBg" : ""} min-h-[100vh] w-full`}>
       <Navbar
         userInfo={userInfo}
         onSearchNote={onSearchNote}
         handleClearSearch={handleClearSearch}
+        isDarkMode={isDarkMode}
+        setIsDarkMode={setIsDarkMode}
       />
 
-      <div className="container mx-auto my-8">
+      <div className={`container mx-auto my-8`}>
         {allNotes.length > 0 ? (
           <div className="grid grid-cols-3 gap-4 mt-8 max-[768px]:grid-cols-2 max-[648px]:px-4 max-[500px]:grid-cols-1">
             {allNotes.map((item) => (
               <CardNote
+                isDarkMode={isDarkMode}
                 key={item._id}
                 title={item.title}
                 date={item.createdOn}
@@ -249,7 +253,7 @@ const Home = () => {
         type={showToastMsg.type}
         onClose={handleCloseToast}
       />
-    </>
+    </div>
   );
 };
 

@@ -2,6 +2,9 @@
 import { useState } from "react";
 import TagInput from "../../components/TagInput/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
+import "froala-editor/css/froala_style.min.css";
+import "froala-editor/css/froala_editor.pkgd.min.css";
+import FroalaEditorComponent from "react-froala-wysiwyg";
 
 const AddEditNotes = ({
   type,
@@ -14,6 +17,10 @@ const AddEditNotes = ({
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
   const [error, setError] = useState("");
+
+  const handleModelChange = (model) => {
+    setContent(model);
+  };
 
   // Add notes API integration
   const addNewNote = async () => {
@@ -107,13 +114,28 @@ const AddEditNotes = ({
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <label className="input-label">CONTENT</label>
-        <textarea
+        {/* <textarea
           type="text"
           className="text-sm bg-slate-50 text-slate-800 outline-none p-2 rounded"
           placeholder="Content"
           rows={10}
           value={content}
           onChange={(e) => setContent(e.target.value)}
+        /> */}
+        <FroalaEditorComponent
+          tag="textarea"
+          model={content}
+          onModelChange={handleModelChange}
+          config={{
+            placeholderText: "Edit Your Content Here!",
+            charCounterCount: false,
+            height: 200,
+            toolbarButtons: {
+              moreText: {
+                buttons: ["bold", "italic", "underline", "strikeThrough"],
+              },
+            },
+          }}
         />
       </div>
       <div className="flex flex-col gap-2 mt-3">

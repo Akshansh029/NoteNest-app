@@ -14,7 +14,7 @@ const CardNote = ({
   onPinNote,
 }) => {
   return (
-    <div className="border-2 rounded p-4 hover:shadow-xl transition-all ease-in-out">
+    <div className="border-2 rounded p-4 hover:shadow-xl transition-all ease-in-out flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <div>
           <h5 className="text-base font-medium">{title}</h5>
@@ -31,7 +31,7 @@ const CardNote = ({
         />
       </div>
       <p className="text-sm mt-2 text-slate-600">{content?.slice(0, 60)}...</p>
-      <div className="flex items-center justify-between mt-2">
+      <div className="flex items-center justify-between mt-2 flex-wrap gap-4">
         <div className="flex gap-2">
           {tags.map((tag, index) => (
             <span

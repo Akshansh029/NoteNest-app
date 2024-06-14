@@ -178,7 +178,7 @@ const Home = () => {
 
       <div className="container mx-auto my-8">
         {allNotes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-3 gap-4 mt-8 max-[768px]:grid-cols-2 max-[648px]:px-4 max-[500px]:grid-cols-1">
             {allNotes.map((item) => (
               <CardNote
                 key={item._id}
@@ -230,7 +230,7 @@ const Home = () => {
         isOpen={openModal.isShown}
         onRequestClose={closeModal}
         appElement={document.getElementById("root")}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-5 w-[40%] max-h-90vh overflow-y-auto"
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-5 w-[50%] max-h-90vh min-h-[80vh] overflow-y-auto"
         overlayClassName="fixed inset-0 bg-black bg-opacity-20"
         contentLabel="Add/Edit Note"
       >

@@ -10,7 +10,7 @@ const Searchbar = ({ value, onChange, handleSearch, onClearSearch }) => {
     }
   };
   return (
-    <div className="flex items-center w-80 bg-slate-100 px-3 rounded-md gap-2">
+    <div className="flex items-center min-w-[180px] w-[320px] bg-slate-100 px-3 rounded-md gap-2">
       <input
         type="text"
         placeholder="Search notes"

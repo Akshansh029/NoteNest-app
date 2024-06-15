@@ -14,6 +14,9 @@ const CardNote = ({
   onPinNote,
   isDarkMode,
 }) => {
+  const truncatedContent =
+    content && content.length > 60 ? `${content.slice(0, 60)}...` : content;
+
   return (
     <div
       className={`rounded-md p-4 hover:shadow-custom transition-all ease-in-out flex flex-col gap-2  ${
@@ -53,7 +56,7 @@ const CardNote = ({
         className={`text-sm mt-2 ${
           isDarkMode ? "text-slate-300" : "text-slate-600"
         }`}
-        dangerouslySetInnerHTML={{ __html: content?.slice(0, 60) }}
+        dangerouslySetInnerHTML={{ __html: truncatedContent }}
       ></div>
       <div className="flex items-center justify-between flex-wrap gap-4 mt-auto">
         <div className="flex gap-2">

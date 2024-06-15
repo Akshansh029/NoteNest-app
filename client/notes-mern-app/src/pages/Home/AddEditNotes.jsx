@@ -2,9 +2,8 @@
 import { useState } from "react";
 import TagInput from "../../components/TagInput/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
-import "froala-editor/css/froala_style.min.css";
-import "froala-editor/css/froala_editor.pkgd.min.css";
-import FroalaEditorComponent from "react-froala-wysiwyg";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AddEditNotes = ({
   type,
@@ -17,9 +16,21 @@ const AddEditNotes = ({
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
   const [error, setError] = useState("");
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, 4, false] }],
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+    ["link", "image"],
 
-  const handleModelChange = (model) => {
-    setContent(model);
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+
+    ["clean"], // remove formatting button
+  ];
+
+  const modules = {
+    toolbar: toolbarOptions,
   };
 
   // Add notes API integration
@@ -114,42 +125,26 @@ const AddEditNotes = ({
       </div>
       <div className="flex flex-col gap-2 mt-3">
         <label className="input-label">CONTENT</label>
-        {/* <textarea
-          type="text"
-          className="text-sm bg-slate-50 text-slate-800 outline-none p-2 rounded"
-          placeholder="Content"
-          rows={10}
+        <ReactQuill
+          theme="snow"
           value={content}
-          onChange={(e) => setContent(e.target.value)}
-        /> */}
-        <FroalaEditorComponent
-          tag="textarea"
-          model={content}
-          onModelChange={handleModelChange}
-          config={{
-            placeholderText: "Edit Your Content Here!",
-            charCounterCount: false,
-            height: 200,
-            toolbarButtons: {
-              moreText: {
-                buttons: ["bold", "italic", "underline", "strikeThrough"],
-              },
-            },
-          }}
+          modules={modules}
+          onChange={setContent}
+          className="h-64 overflow-y-auto"
         />
       </div>
-      <div className="flex flex-col gap-2 mt-3">
-        <label className="input-label">TAGS</label>
-        <TagInput tags={tags} setTags={setTags} />
+      <div className="mt-auto">
+        <div className="flex flex-col gap-2 mt-3">
+          <label className="input-label">TAGS</label>
+          <TagInput tags={tags} setTags={setTags} />
+        </div>
+        {error && (
+          <p className="text-sm text-red-500 font-medium mt-2">{error}</p>
+        )}
+        <button className="btn-primary" onClick={handleAddNote}>
+          {type === "edit" ? "Update" : "Add"}
+        </button>
       </div>
-
-      {error && (
-        <p className="text-sm text-red-500 font-medium mt-2">{error}</p>
-      )}
-
-      <button className="btn-primary" onClick={handleAddNote}>
-        {type === "edit" ? "Update" : "Add"}
-      </button>
     </div>
   );
 };

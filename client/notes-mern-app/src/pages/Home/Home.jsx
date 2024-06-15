@@ -203,6 +203,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           </div>
         ) : (
           <EmptyCard
+            isDarkMode={isDarkMode}
             notesImg={isSearch ? NoDataPng : NotesPng}
             message={
               isSearch ? (

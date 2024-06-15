@@ -68,6 +68,7 @@ const Navbar = ({
           )}
         </button>
         <ProfileInfo
+          isDarkMode={isDarkMode}
           onLogout={() => {
             navigate("/login");
           }}

@@ -129,10 +129,9 @@ app.post("/login", async (req, res) => {
 // Add note API
 app.post("/add-note", authenticateToken, async (req, res) => {
   const { title, content, tags } = req.body;
-  // const { user } = req.user ? req.user : req;
   const user = req.user;
 
-  console.log("Received request:", { title, content, tags, user });
+  // console.log("Received request:", { title, content, tags, user });
 
   if (!title)
     return res.status(400).json({ error: true, message: "Title is required" });

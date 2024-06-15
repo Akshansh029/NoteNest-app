@@ -14,9 +14,9 @@ const CardNote = ({
 }) => {
   return (
     <div
-      className={`cursor-pointer rounded-md p-3 hover:shadow-custom transition-all ease-in-out flex flex-col gap-4  ${
+      className={`cursor-pointer rounded-md p-3 transition-all ease-in-out flex flex-col gap-4  ${
         isDarkMode
-          ? "bg-darkNav border-zinc-600 hover:shadow-slate-400"
+          ? "bg-darkNav hover:bg-[#2C2C2C] border-2 border-darkBg"
           : "bg-slate-50 border-2"
       } `}
       onClick={onEdit}
@@ -24,8 +24,8 @@ const CardNote = ({
       <div className="flex items-center justify-between">
         <div>
           <h3
-            className={`text-base font-semibold  ${
-              isDarkMode ? "text-slate-200" : ""
+            className={`text-base font-medium  ${
+              isDarkMode ? "text-darkTextColor" : ""
             }`}
           >
             {title}
@@ -36,7 +36,7 @@ const CardNote = ({
           className={`icon-btn ${
             isPinned ? "text-primary" : "text-slate-400"
           } hover:text-primary ${
-            isDarkMode ? "text-slate-200" : "text-slate-400"
+            isDarkMode ? "text-darkTextColor" : "text-slate-400"
           }`}
           onClick={onPinNote}
         />
@@ -44,14 +44,14 @@ const CardNote = ({
       <div className="flex items-center gap-2 justify-between">
         <span
           className={`text-xs ${
-            isDarkMode ? "text-slate-400" : " text-slate-500"
+            isDarkMode ? "text-darkTextColor" : " text-slate-500"
           }`}
         >
           {moment(date).format("Do MMM YYYY")}
         </span>
         <MdDelete
           className={`icon-btn hover:text-red-600 ${
-            isDarkMode ? "text-slate-200" : "text-slate-400"
+            isDarkMode ? "text-darkTextColor" : "text-slate-400"
           }`}
           onClick={deleteNote}
         />

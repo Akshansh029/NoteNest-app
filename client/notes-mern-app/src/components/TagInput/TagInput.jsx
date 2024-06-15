@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MdAdd } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 
-const TagInput = ({ tags, setTags }) => {
+const TagInput = ({ tags, setTags, isDarkMode }) => {
   const [inputValue, setInputValue] = useState("");
 
   const handleInputChange = (e) => {
@@ -33,7 +33,9 @@ const TagInput = ({ tags, setTags }) => {
       <div className="flex items-center gap-2">
         <input
           type="text"
-          className="text-sm bg-transparent border px-3 py-2 rounded outline-none"
+          className={`text-sm bg-transparent border px-3 py-2 rounded outline-none ${
+            isDarkMode ? "text-darkTextColor border-slate-400" : ""
+          }`}
           placeholder="Add tags"
           value={inputValue}
           onChange={handleInputChange}
@@ -51,14 +53,22 @@ const TagInput = ({ tags, setTags }) => {
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="p-2 bg-slate-200 text-xs rounded text-slate-700 flex items-center font-semibold"
+              className={`p-2 text-xs rounded flex items-center font-semibold ${
+                isDarkMode
+                  ? "bg-[#2C2C2C] text-darkTextColor"
+                  : "bg-slate-200 text-slate-700"
+              }`}
             >
               #{tag}
               <button
                 className="ml-1 text-red-500"
                 onClick={() => removeTag(tag)}
               >
-                <IoClose className="text-slate-700" />
+                <IoClose
+                  className={
+                    isDarkMode ? "text-darkTextColor" : " text-slate-700"
+                  }
+                />
               </button>
             </span>
           ))}

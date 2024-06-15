@@ -4,6 +4,7 @@ import TagInput from "../../components/TagInput/TagInput";
 import axiosInstance from "../../utils/axiosInstance";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import "../../index.css";
 
 const AddEditNotes = ({
   type,
@@ -11,22 +12,22 @@ const AddEditNotes = ({
   getAllNotes,
   closeModal,
   showToastMessage,
+  isDarkMode,
 }) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
   const [tags, setTags] = useState(noteData?.tags || []);
   const [error, setError] = useState("");
+
   const toolbarOptions = [
     [{ header: [1, 2, 3, 4, false] }],
-    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
     ["link", "image"],
-
-    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }],
     [{ align: [] }],
-
-    ["clean"], // remove formatting button
+    ["clean"],
   ];
 
   const modules = {
@@ -112,39 +113,68 @@ const AddEditNotes = ({
   };
 
   return (
-    <div>
+    <div className="min-h-[100%] relative flex flex-col justify-between">
       <div className="flex flex-col gap-2">
-        <label className="input-label">TITLE</label>
+        <label
+          className={`input-label ${
+            isDarkMode ? "text-gray-400" : "text slate-800"
+          }`}
+        >
+          TITLE
+        </label>
         <input
           type="text"
-          className="text-xl text-slate-800 outline-none font-medium"
+          className={`text-2xl outline-none font-medium ${
+            isDarkMode ? "text-darkTextColor bg-transparent" : "text-slate-800"
+          }`}
           placeholder="Go for a walk at 6"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
       <div className="flex flex-col gap-2 mt-3">
-        <label className="input-label">CONTENT</label>
+        <label
+          className={`input-label ${
+            isDarkMode ? "text-gray-400" : "text slate-800"
+          }`}
+        >
+          CONTENT
+        </label>
         <ReactQuill
           theme="snow"
           value={content}
           modules={modules}
           onChange={setContent}
-          className="h-64 overflow-y-auto"
+          className={`min-h-64 max-h-64 overflow-y-auto hide-scrollbar text-base ${
+            isDarkMode
+              ? "text-darkTextColor react-quill-toolbar-dark"
+              : "text-black"
+          }`}
         />
       </div>
-      <div className="mt-auto">
-        <div className="flex flex-col gap-2 mt-3">
-          <label className="input-label">TAGS</label>
-          <TagInput tags={tags} setTags={setTags} />
+      <div className="mt-auto flex flex-col justi">
+        <div className="flex flex-col gap-2">
+          <label
+            className={`input-label ${
+              isDarkMode ? "text-gray-400" : "text slate-800"
+            }`}
+          >
+            TAGS
+          </label>
+          <TagInput tags={tags} setTags={setTags} isDarkMode={isDarkMode} />
         </div>
         {error && (
           <p className="text-sm text-red-500 font-medium mt-2">{error}</p>
         )}
-        <button className="btn-primary" onClick={handleAddNote}>
-          {type === "edit" ? "Update" : "Add"}
-        </button>
       </div>
+      <button
+        className={`btn-primary mt-6 ${
+          isDarkMode ? "bg-primaryDark" : "bg-primary"
+        }`}
+        onClick={handleAddNote}
+      >
+        {type === "edit" ? "Update" : "Add"}
+      </button>
     </div>
   );
 };

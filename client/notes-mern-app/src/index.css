@@ -23,7 +23,7 @@
 }
 
 .btn-primary {
-  @apply w-full text-sm bg-primary text-white p-2 rounded my-2 hover:bg-blue-600;
+  @apply w-full text-sm text-white p-2 rounded my-2 hover:bg-blue-600;
 }
 
 .icon-btn {
@@ -31,10 +31,59 @@
 }
 
 .input-label {
-  @apply text-sm text-slate-800 font-medium;
+  @apply text-sm font-medium;
 }
 
 .body-height {
-  @apply h-auto; /* Ensures height is not overridden by Tailwind's utility classes */
-  min-height: calc(100vh - 64px);
+  @apply h-auto;
+  height: calc(100vh - 64px);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ql-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: white;
+}
+
+/* Define dark mode styles for React Quill toolbar */
+.react-quill-toolbar-dark .ql-toolbar {
+  background-color: #2c2c2c;
+  border-color: black;
+  color: #fff;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-picker-label,
+.react-quill-toolbar-dark .ql-toolbar .ql-picker-item {
+  color: #fff;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-stroke {
+  stroke: #fff;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-fill {
+  fill: #fff;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-picker {
+  color: #fff;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-picker-options {
+  background-color: #444;
+}
+
+.react-quill-toolbar-dark .ql-toolbar .ql-picker-item.ql-selected {
+  background-color: #555;
 }

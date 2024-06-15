@@ -33,3 +33,8 @@
 .input-label {
   @apply text-sm text-slate-800 font-medium;
 }
+
+.body-height {
+  @apply h-auto; /* Ensures height is not overridden by Tailwind's utility classes */
+  min-height: calc(100vh - 64px);
+}

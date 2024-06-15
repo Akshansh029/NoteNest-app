@@ -30,7 +30,7 @@ const Navbar = ({
 
   return (
     <div
-      className={`flex justify-between items-center py-2 px-6 drop-shadow max-[768px]:px-3 ${
+      className={`flex justify-between items-center py-2 px-6 drop-shadow max-[768px]:px-3 max-h-64 ${
         isDarkMode ? "bg-darkNav" : "bg-white"
       }`}
     >

@@ -4,7 +4,6 @@
 import Navbar from "../../components/Navbar/Navbar";
 import CardNote from "../../components/CardNote/CardNote";
 import AddEditNotes from "./AddEditNotes";
-import Modal from "react-modal";
 import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +17,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [showToastMsg, setShowToastMsg] = useState({
     isShown: false,
     message: "",
@@ -27,7 +27,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
 
   const [openModal, setOpenModal] = useState({
     isShown: false,
-    type: "add",
+    type: "edit",
     data: null,
   });
 
@@ -37,6 +37,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
       type: "add",
       data: null,
     });
+    setSelectedNote(null);
   };
 
   const showToastMessage = (message, type) => {
@@ -60,8 +61,9 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     getAllNotes();
   };
 
-  const handleEdit = (noteDetails) => {
-    setOpenModal({ isShown: true, data: noteDetails, type: "edit" });
+  const handleEdit = (note) => {
+    setOpenModal({ isShown: true, data: note, type: "edit" });
+    setSelectedNote(note);
   };
 
   // Get userInfo API call
@@ -179,74 +181,79 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         setIsDarkMode={setIsDarkMode}
       />
 
-      <div className={`container mx-auto my-8`}>
-        {allNotes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-8 max-[768px]:grid-cols-2 max-[648px]:px-4 max-[500px]:grid-cols-1">
-            {allNotes.map((item) => (
-              <CardNote
-                isDarkMode={isDarkMode}
-                key={item._id}
-                title={item.title}
-                date={item.createdOn}
-                tags={item.tags}
-                content={item.content}
-                isPinned={item.isPinned}
-                onEdit={() => handleEdit(item)}
-                deleteNote={() => {
-                  deleteNote(item);
-                }}
-                onPinNote={() => {
-                  pinNote(item);
-                }}
-              />
-            ))}
-          </div>
-        ) : (
-          <EmptyCard
-            isDarkMode={isDarkMode}
-            notesImg={isSearch ? NoDataPng : NotesPng}
-            message={
-              isSearch ? (
-                <span className="flex items-center justify-center gap-1">
-                  Oops! Can't find any matches for your search.
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-1">
-                  No notes yet! Click{" "}
-                  <span className="font-semibold text-2xl">+</span> to capture
-                  your first thought!
-                </span>
-              )
-            }
-          />
-        )}
+      <div
+        className={`w-full body-height flex ${
+          isDarkMode ? "bg-darkBg" : "bg-white"
+        }`}
+      >
+        <div className="categories w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px]"></div>
+        <div className="notes w-[25%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto">
+          {allNotes.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              {allNotes.map((item) => (
+                <CardNote
+                  isDarkMode={isDarkMode}
+                  key={item._id}
+                  title={item.title}
+                  date={item.createdOn}
+                  tags={item.tags}
+                  content={item.content}
+                  isPinned={item.isPinned}
+                  onEdit={() => handleEdit(item)}
+                  deleteNote={() => {
+                    deleteNote(item);
+                  }}
+                  onPinNote={() => {
+                    pinNote(item);
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyCard
+              isDarkMode={isDarkMode}
+              notesImg={isSearch ? NoDataPng : NotesPng}
+              message={
+                isSearch ? (
+                  <span className="flex items-center justify-center gap-1">
+                    Oops! Can't find any matches for your search.
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-1">
+                    No notes yet! Click{" "}
+                    <span className="font-semibold text-2xl">+</span> to capture
+                    your first thought!
+                  </span>
+                )
+              }
+            />
+          )}
+        </div>
+        <div className="editor w-[60%] min-h-[100%] bg-transparent p-4">
+          {selectedNote || openModal.type === "add" ? (
+            <AddEditNotes
+              type={openModal.type}
+              noteData={openModal.data}
+              getAllNotes={getAllNotes}
+              closeModal={closeModal}
+              showToastMessage={showToastMessage}
+              key={selectedNote ? selectedNote._id : "add"}
+            />
+          ) : (
+            <p>Select a note to view its content</p>
+          )}
+        </div>
       </div>
 
       <button
-        className="bg-primary p-4 fixed bottom-10 right-10 rounded-lg hover:bg-blue-500 hover:drop-shadow-md flex items-center gap-2"
+        className="bg-primary p-4 fixed bottom-10 left-20 rounded-lg hover:bg-blue-500 hover:drop-shadow-md flex items-center gap-2"
         onClick={() => {
           setOpenModal({ isShown: true, type: "add", data: null });
+          setSelectedNote(null);
         }}
       >
         <FaPlus className="text-white text-[25px]" />
       </button>
-
-      <Modal
-        isOpen={openModal.isShown}
-        onRequestClose={closeModal}
-        appElement={document.getElementById("root")}
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-lg p-5 w-[50%] max-h-90vh min-h-[80vh] overflow-y-auto"
-        overlayClassName="fixed inset-0 bg-black bg-opacity-20"
-        contentLabel="Add/Edit Note"
-      >
-        <AddEditNotes
-          type={openModal.type}
-          noteData={openModal.data}
-          getAllNotes={getAllNotes}
-          closeModal={closeModal}
-          showToastMessage={showToastMessage}
-        />
-      </Modal>
 
       <Toast
         isShown={showToastMsg.isShown}

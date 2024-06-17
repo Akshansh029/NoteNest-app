@@ -23,7 +23,7 @@
 }
 
 .btn-primary {
-  @apply w-full text-sm text-white p-2 rounded my-2 hover:bg-blue-600;
+  @apply w-full text-sm text-white p-2 rounded my-2 bg-primary hover:bg-blue-600;
 }
 
 .icon-btn {

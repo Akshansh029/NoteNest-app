@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 // eslint-disable-next-line react/prop-types
-const PasswordField = ({ value, onChange, placeholder }) => {
+const PasswordField = ({ value, onChange, placeholder, isDarkMode }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -15,7 +16,9 @@ const PasswordField = ({ value, onChange, placeholder }) => {
         onChange={onChange}
         type={showPassword ? "text" : "password"}
         placeholder={placeholder || "Password"}
-        className="w-full text-sm bg-transparent py-3 mr-3 rounded outline-none"
+        className={`w-full text-sm bg-transparent py-3 mr-3 rounded outline-none ${
+          isDarkMode ? "text-darkTextColor" : ""
+        }`}
       />
 
       {showPassword ? (

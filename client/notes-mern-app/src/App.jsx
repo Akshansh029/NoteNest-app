@@ -17,8 +17,18 @@ const App = () => {
               <Home isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
             }
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route
+            path="/login"
+            element={
+              <Login isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <Signup isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
+            }
+          />
         </Routes>
       </Router>
     </div>

@@ -189,7 +189,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
       >
         <div className="categories relative w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px]">
           <button
-            className={`p-4 absolute bottom-10 left-7 rounded-lg hover:bg-blue-500 hover:drop-shadow-md flex items-center gap-2 ${
+            className={`hover:rounded-[35px] transition-all duration-200 p-4 absolute bottom-10 left-7 rounded-lg hover:drop-shadow-md flex items-center gap-2 ${
               isDarkMode ? "bg-primaryDark" : "bg-primary"
             }`}
             onClick={() => {
@@ -238,9 +238,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                   </span>
                 ) : (
                   <span className="flex items-center justify-center gap-1">
-                    No notes yet! Click{" "}
-                    <span className="font-semibold text-2xl">+</span> to capture
-                    your first thought!
+                    No notes yet! Click + to capture your thoughts
                   </span>
                 )
               }

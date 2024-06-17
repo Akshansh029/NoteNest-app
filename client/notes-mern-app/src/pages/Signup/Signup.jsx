@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +8,7 @@ import validateEmail from "../../utils/validateEmail";
 import axiosInstance from "../../utils/axiosInstance";
 import Toast from "../../components/ToastMessage/ToastMessage";
 
-const Signup = () => {
+const Signup = ({ isDarkMode, setIsDarkMode }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -94,30 +95,45 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
 
-      <div className="flex justify-center items-center mt-28">
-        <div className="w-96 border-2 border-slate-300 rounded bg-white px-7 py-10">
+      <div
+        className={`flex justify-center items-center h-calc-100-minus-64 ${
+          isDarkMode ? "bg-darkBg" : "bg-white"
+        }`}
+      >
+        <div
+          className={`w-96 border-2 border-slate-300 rounded px-7 py-10 ${
+            isDarkMode ? "bg-darkNav border-gray-500" : "bg-white"
+          }`}
+        >
           <form onSubmit={handleSignup} className="">
-            <h4 className="text-2xl mb-7">Signup</h4>
+            <h4
+              className={`text-2xl mb-7 ${
+                isDarkMode ? "text-darkTextColor" : ""
+              }`}
+            >
+              Signup
+            </h4>
 
             <input
               type="text"
               placeholder="Username"
-              className="input-box"
+              className={`input-box ${isDarkMode ? "text-darkTextColor" : ""}`}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <input
               type="email"
               placeholder="Email"
-              className="input-box"
+              className={`input-box ${isDarkMode ? "text-darkTextColor" : ""}`}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <PasswordField
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              isDarkMode={isDarkMode}
             />
 
             {error && (
@@ -130,7 +146,11 @@ const Signup = () => {
               Signup
             </button>
 
-            <p className="text-sm text-center mt-4">
+            <p
+              className={`text-sm text-center mt-4 ${
+                isDarkMode ? "text-darkTextColor" : ""
+              }`}
+            >
               Already have an account?{" "}
               <Link to="/login" className="text-blue-600 underline">
                 Login

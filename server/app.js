@@ -37,7 +37,10 @@ app.post("/create-account", async (req, res) => {
 
   const isUser = await User.findOne({ email });
 
-  if (isUser) return res.json({ error: true, message: "User already exists" });
+  if (isUser)
+    return res
+      .status(400)
+      .json({ error: true, message: "User already exists" });
 
   const user = new User({ fullName, email, password });
   await user.save();

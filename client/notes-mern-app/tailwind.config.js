@@ -14,6 +14,9 @@ export default {
       boxShadow: {
         custom: "0px 0px 2px 2px rgba(153,153,153,1)",
       },
+      height: {
+        "calc-100-minus-64": "calc(100vh - 64px)",
+      },
     },
   },
   plugins: [],

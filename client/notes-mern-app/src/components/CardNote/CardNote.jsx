@@ -47,7 +47,7 @@ const CardNote = ({
             isDarkMode ? "text-darkTextColor" : " text-slate-500"
           }`}
         >
-          {moment(date).format("Do MMM YYYY")}
+          {moment(date).format("h:mm a, Do MMM YYYY")}
         </span>
         <MdDelete
           className={`icon-btn hover:text-red-600 ${

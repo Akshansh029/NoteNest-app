@@ -13,6 +13,8 @@ import Toast from "../../components/ToastMessage/ToastMessage";
 import EmptyCard from "../../components/EmptyCard/EmptyCard";
 import NotesPng from "../../assets/NotesPng.png";
 import NoDataPng from "../../assets/no-data-png.png";
+import SelectLightPng from "../../assets/selectlight.png";
+import TagsCard from "../../components/TagsCard/TagsCard";
 
 const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -187,7 +189,17 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           isDarkMode ? "bg-darkBg" : "bg-white"
         }`}
       >
-        <div className="categories relative w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px]">
+        <div className="categories relative w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4">
+          <div>
+            <h4
+              className={`text-sm font-semibold ${
+                isDarkMode ? "text-darkTextColor" : ""
+              }`}
+            >
+              Tags
+            </h4>
+            <TagsCard />
+          </div>
           <button
             className={`hover:rounded-[35px] transition-all duration-200 p-4 absolute bottom-10 left-7 rounded-lg hover:drop-shadow-md flex items-center gap-2 ${
               isDarkMode ? "bg-primaryDark" : "bg-primary"
@@ -208,24 +220,26 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         <div className="notes w-[25%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">
           {allNotes.length > 0 ? (
             <div className="flex flex-col gap-4">
-              {allNotes.map((item) => (
-                <CardNote
-                  isDarkMode={isDarkMode}
-                  key={item._id}
-                  title={item.title}
-                  date={item.createdOn}
-                  tags={item.tags}
-                  content={item.content}
-                  isPinned={item.isPinned}
-                  onEdit={() => handleEdit(item)}
-                  deleteNote={() => {
-                    deleteNote(item);
-                  }}
-                  onPinNote={() => {
-                    pinNote(item);
-                  }}
-                />
-              ))}
+              {allNotes
+                .sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
+                .map((item) => (
+                  <CardNote
+                    isDarkMode={isDarkMode}
+                    key={item._id}
+                    title={item.title}
+                    date={item.createdOn}
+                    tags={item.tags}
+                    content={item.content}
+                    isPinned={item.isPinned}
+                    onEdit={() => handleEdit(item)}
+                    deleteNote={() => {
+                      deleteNote(item);
+                    }}
+                    onPinNote={() => {
+                      pinNote(item);
+                    }}
+                  />
+                ))}
             </div>
           ) : (
             <EmptyCard
@@ -257,7 +271,11 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
               key={selectedNote ? selectedNote._id : "add"}
             />
           ) : (
-            <p>Select a note to view its content</p>
+            <EmptyCard
+              isDarkMode={isDarkMode}
+              notesImg={SelectLightPng}
+              message={"Select a note to view it's content"}
+            />
           )}
         </div>
       </div>

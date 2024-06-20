@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 const EmptyCard = ({ notesImg, message, isDarkMode }) => {
   return (
-    <div className="flex flex-col items-center justify-center mt-20">
+    <div className="flex flex-col items-center justify-center mt-20 ">
       <img src={notesImg} alt="No notes" width={350}></img>
 
       <p

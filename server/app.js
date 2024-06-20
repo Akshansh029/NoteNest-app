@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { MongoClient, ObjectId } = require("mongodb");
 const config = require("./config.json");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -7,6 +8,7 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 const port = 5000;
+const mongoURI = process.env.MONGODB_URI;
 
 const User = require("./models/user.model");
 const Note = require("./models/note.model");
@@ -306,6 +308,28 @@ app.get("/search-notes/", authenticateToken, async (req, res) => {
       error: true,
       message: "Internal server error",
     });
+  }
+});
+
+//Get tags API
+app.get("/get-all-tags", authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    // console.log(userId);
+    const notes = await Note.find({ userId });
+
+    const allTags = notes.reduce((acc, note) => {
+      note.tags.forEach((tag) => {
+        if (!acc.includes(tag)) {
+          acc.push(tag);
+        }
+      });
+      return acc;
+    }, []);
+
+    res.json({ tags: allTags });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 });
 

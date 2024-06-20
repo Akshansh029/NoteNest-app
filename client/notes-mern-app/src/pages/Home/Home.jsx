@@ -19,6 +19,7 @@ import TagsCard from "../../components/TagsCard/TagsCard";
 const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
+  const [tags, setTags] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [showToastMsg, setShowToastMsg] = useState({
@@ -99,6 +100,21 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     }
   };
 
+  //Get all tags API integration
+  const getAllTags = async () => {
+    try {
+      const response = await axiosInstance.get("/get-all-tags");
+      // console.log("Response: ", response.data);
+      if (response.data && Array.isArray(response.data.tags)) {
+        setTags(response.data.tags);
+      } else {
+        console.log("Tags not found or not an array");
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   //Delete note integration
   const deleteNote = async (data) => {
     const noteId = data._id;
@@ -110,6 +126,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         // console.log("Note deleted successfully:", response.data.note);
         showToastMessage("Note deleted successfully", "delete");
         getAllNotes();
+        getAllTags();
       }
     } catch (error) {
       console.error("Error updating note:", error);
@@ -168,6 +185,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
 
   useEffect(() => {
     getAllNotes();
+    getAllTags();
     const user = localStorage.getItem("user");
     if (user) {
       getUserInfo();
@@ -185,21 +203,29 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
       />
 
       <div
-        className={`w-full body-height flex ${
+        className={`w-full body-height flex relative ${
           isDarkMode ? "bg-darkBg" : "bg-white"
         }`}
       >
-        <div className="categories relative w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4">
-          <div>
-            <h4
-              className={`text-sm font-semibold ${
-                isDarkMode ? "text-darkTextColor" : ""
-              }`}
-            >
-              Tags
-            </h4>
-            <TagsCard />
-          </div>
+        <div className="categories w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">
+          <h4
+            className={`text-sm font-semibold ${
+              isDarkMode ? "text-darkTextColor" : ""
+            }`}
+          >
+            Tags
+          </h4>
+          {tags.length > 0 ? (
+            <div className="flex flex-col gap-2 mt-2">
+              {tags
+                .sort((a, b) => a.localeCompare(b))
+                .map((tag, index) => (
+                  <TagsCard key={index} tagsHead={tag} />
+                ))}
+            </div>
+          ) : (
+            <p>No tags yet!</p>
+          )}
           <button
             className={`hover:rounded-[35px] transition-all duration-200 p-4 absolute bottom-10 left-7 rounded-lg hover:drop-shadow-md flex items-center gap-2 ${
               isDarkMode ? "bg-primaryDark" : "bg-primary"

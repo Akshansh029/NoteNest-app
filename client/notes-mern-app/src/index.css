@@ -36,7 +36,7 @@
 
 .body-height {
   @apply h-auto;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 64.73px);
 }
 
 .hide-scrollbar::-webkit-scrollbar {

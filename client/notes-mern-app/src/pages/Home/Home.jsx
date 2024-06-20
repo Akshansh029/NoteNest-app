@@ -220,7 +220,11 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
               {tags
                 .sort((a, b) => a.localeCompare(b))
                 .map((tag, index) => (
-                  <TagsCard key={index} tagsHead={tag} />
+                  <TagsCard
+                    key={index}
+                    tagsHead={tag}
+                    isDarkMode={isDarkMode}
+                  />
                 ))}
             </div>
           ) : (
@@ -254,8 +258,6 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                     key={item._id}
                     title={item.title}
                     date={item.createdOn}
-                    tags={item.tags}
-                    content={item.content}
                     isPinned={item.isPinned}
                     onEdit={() => handleEdit(item)}
                     deleteNote={() => {

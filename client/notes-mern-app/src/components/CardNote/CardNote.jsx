@@ -17,7 +17,7 @@ const CardNote = ({
       className={`cursor-pointer rounded-md p-3 transition-all ease-in-out flex flex-col gap-4  ${
         isDarkMode
           ? "bg-darkNav hover:bg-[#2C2C2C] border-2 border-darkBg"
-          : "bg-slate-50 border-2"
+          : "bg-slate-100 border-2 hover:bg-slate-200"
       } `}
       onClick={onEdit}
     >
@@ -38,7 +38,10 @@ const CardNote = ({
           } hover:text-primary ${
             isDarkMode ? "text-darkTextColor" : "text-slate-400"
           }`}
-          onClick={onPinNote}
+          onClick={(e) => {
+            e.stopPropagation();
+            onPinNote();
+          }}
         />
       </div>
       <div className="flex items-center gap-2 justify-between">
@@ -53,7 +56,10 @@ const CardNote = ({
           className={`icon-btn hover:text-red-600 ${
             isDarkMode ? "text-darkTextColor" : "text-slate-400"
           }`}
-          onClick={deleteNote}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteNote();
+          }}
         />
       </div>
     </div>

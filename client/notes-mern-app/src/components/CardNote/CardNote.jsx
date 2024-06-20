@@ -36,9 +36,7 @@ const CardNote = ({
         <MdOutlinePushPin
           className={`icon-btn ${
             isPinned ? "text-primary" : "text-slate-400"
-          } hover:text-primary ${
-            isDarkMode ? "text-darkTextColor" : "text-slate-400"
-          }`}
+          } hover:text-primary`}
           onClick={(e) => {
             e.stopPropagation();
             onPinNote();

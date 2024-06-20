@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { FaTag } from "react-icons/fa6";
 
-const TagsCard = ({ tagsHead, isDarkMode }) => {
+const TagsCard = ({ tagsHead, isDarkMode, onSearchNote }) => {
   return (
     <div
+      onClick={() => onSearchNote(tagsHead)}
       className={`flex items-center rounded-md py-2 px-3 cursor-pointer ${
         isDarkMode
           ? "bg-darkNav text-darkTextColor hover:bg-[#2C2C2C]"

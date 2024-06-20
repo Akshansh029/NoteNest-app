@@ -27,7 +27,7 @@
 }
 
 .icon-btn {
-  @apply text-xl text-slate-400 cursor-pointer;
+  @apply text-xl cursor-pointer;
 }
 
 .input-label {

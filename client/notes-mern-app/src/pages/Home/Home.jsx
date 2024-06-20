@@ -252,6 +252,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                     key={index}
                     tagsHead={tag}
                     isDarkMode={isDarkMode}
+                    onSearchNote={onSearchNote}
                   />
                 ))}
             </div>
@@ -292,7 +293,8 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           )}
           <div className="">
             <h4
-              className={`text-sm font-semibold ml-1 ${
+              onClick={() => getAllNotes()}
+              className={`text-sm font-semibold ml-1 cursor-pointer ${
                 isDarkMode ? "text-darkTextColor" : ""
               }`}
             >

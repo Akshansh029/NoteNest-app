@@ -312,6 +312,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         message={showToastMsg.message}
         type={showToastMsg.type}
         onClose={handleCloseToast}
+        isDarkMode={isDarkMode}
       />
     </div>
   );

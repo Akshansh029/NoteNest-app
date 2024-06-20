@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { LuCheck } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
 
-const Toast = ({ isShown, message, type, onClose }) => {
+const Toast = ({ isShown, message, type, onClose, isDarkMode }) => {
   useEffect(() => {
     if (isShown) {
       const timeOutId = setTimeout(() => {
@@ -23,7 +23,9 @@ const Toast = ({ isShown, message, type, onClose }) => {
       } pointer-events-none`}
     >
       <div
-        className={`min-w-52 bg-white border shadow-xl rounded-md after:w-[5px] after:h-full ${
+        className={`min-w-52  border shadow-xl rounded-md after:w-[5px] after:h-full ${
+          isDarkMode ? "bg-darkNav" : "bg-white"
+        } ${
           type === "delete" ? "after:bg-red-500" : "after:bg-green-500"
         } after:absolute after:top-0 after:rounded-l-lg`}
       >
@@ -39,7 +41,13 @@ const Toast = ({ isShown, message, type, onClose }) => {
               <LuCheck className="text-xl text-green-500" />
             )}
           </div>
-          <p className="text-xl font-medium text-slate-800">{message}</p>
+          <p
+            className={`text-xl font-medium ${
+              isDarkMode ? "text-darkTextColor" : "text-slate-800"
+            }`}
+          >
+            {message}
+          </p>
         </div>
       </div>
     </div>

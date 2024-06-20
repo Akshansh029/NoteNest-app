@@ -48,7 +48,8 @@ const AddEditNotes = ({
       if (response.data && response.data.note) {
         console.log("Note added successfully:", response.data.note);
         showToastMessage("Note added successfully", "add");
-        getAllNotes(); // Ensure getAllNotes is called to fetch the updated list
+        getAllNotes();
+        getAllTags();
         closeModal();
       }
     } catch (error) {

@@ -5,7 +5,6 @@ import "../../index.css";
 import Navbar from "../../components/Navbar/Navbar";
 import CardNote from "../../components/CardNote/CardNote";
 import AddEditNotes from "./AddEditNotes";
-import { FaPlus } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -34,6 +33,11 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     type: "edit",
     data: null,
   });
+
+  const AddNote = () => {
+    setOpenModal({ isShown: true, type: "add", data: null });
+    setSelectedNote(null);
+  };
 
   const closeModal = () => {
     setOpenModal({
@@ -200,6 +204,9 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         handleClearSearch={handleClearSearch}
         isDarkMode={isDarkMode}
         setIsDarkMode={setIsDarkMode}
+        setOpenModal={setOpenModal}
+        setSelectedNote={setSelectedNote}
+        AddNote={AddNote}
       />
 
       <div
@@ -230,22 +237,6 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           ) : (
             <p>No tags yet!</p>
           )}
-          <button
-            className={`hover:rounded-[35px] transition-all duration-200 p-4 absolute bottom-10 left-7 rounded-lg hover:drop-shadow-md flex items-center gap-2 ${
-              isDarkMode ? "bg-primaryDark" : "bg-primary"
-            }`}
-            onClick={() => {
-              setOpenModal({ isShown: true, type: "add", data: null });
-              setSelectedNote(null);
-            }}
-          >
-            <div className="flex gap-2">
-              <FaPlus className="text-white text-[20px]" />
-              <h4 className="text-base font-semibold text-white max-[768px]:display-none">
-                Create New
-              </h4>
-            </div>
-          </button>
         </div>
         <div className="notes w-[25%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">
           {allNotes.length > 0 ? (
@@ -260,6 +251,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                     date={item.createdOn}
                     isPinned={item.isPinned}
                     onEdit={() => handleEdit(item)}
+                    closeModal={closeModal}
                     deleteNote={() => {
                       deleteNote(item);
                     }}
@@ -288,7 +280,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           )}
         </div>
         <div className="editor w-[60%] min-h-[100%] bg-transparent p-4 bg-slate-100">
-          {selectedNote || openModal.type === "add" ? (
+          {openModal.isShown ? (
             <AddEditNotes
               type={openModal.type}
               noteData={openModal.data}
@@ -296,13 +288,14 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
               closeModal={closeModal}
               showToastMessage={showToastMessage}
               isDarkMode={isDarkMode}
+              getAllTags={getAllTags}
               key={selectedNote ? selectedNote._id : "add"}
             />
           ) : (
             <EmptyCard
               isDarkMode={isDarkMode}
               notesImg={SelectLightPng}
-              message={"Select a note to view it's content"}
+              message={"Select a note to view its content"}
             />
           )}
         </div>

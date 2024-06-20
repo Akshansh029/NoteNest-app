@@ -5,6 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../../index.css";
+import { IoClose } from "react-icons/io5";
 
 const AddEditNotes = ({
   type,
@@ -13,6 +14,7 @@ const AddEditNotes = ({
   closeModal,
   showToastMessage,
   isDarkMode,
+  getAllTags,
 }) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
@@ -78,6 +80,7 @@ const AddEditNotes = ({
         console.log("Note updated successfully:", response.data.note);
         showToastMessage("Note updated successfully", "edit");
         getAllNotes();
+        getAllTags();
         closeModal();
       }
     } catch (error) {
@@ -114,6 +117,14 @@ const AddEditNotes = ({
 
   return (
     <div className="min-h-[100%] relative flex flex-col justify-between">
+      <button
+        className={`h-5 w-5 absolute right-2 top-2 flex items-center justify-center rounded-full ${
+          isDarkMode ? "bg-darkBg text-white" : " bg-slate-300"
+        }`}
+        onClick={closeModal}
+      >
+        <IoClose className={`text-lg`} />
+      </button>
       <div className="flex flex-col gap-2">
         <label
           className={`input-label ${

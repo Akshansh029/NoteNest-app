@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Searchbar from "../Searchbar/Searchbar";
 import { IoSunny } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 
 const Navbar = ({
   userInfo,
@@ -12,6 +13,7 @@ const Navbar = ({
   handleClearSearch,
   isDarkMode,
   setIsDarkMode,
+  AddNote,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -51,6 +53,17 @@ const Navbar = ({
       />
 
       <div className="flex items-center gap-4">
+        <button
+          className={`transition-all ease-in rounded-[35px] w-[8.3rem] h-10 font-medium flex items-center justify-center gap-2 hover:ring-2 hover:bg-transparent hover:ring-primary bg-primary group`}
+          onClick={AddNote}
+        >
+          <div className="flex gap-2">
+            <FaPlus className="text-white text-[18px] group-hover:text-primary" />
+            <h4 className="text-sm font-medium text-white max-[768px]:display-none group-hover:text-primary">
+              Create New
+            </h4>
+          </div>
+        </button>
         <button
           className={`p-3 rounded-full hover:drop-shadow-sm ${
             isDarkMode

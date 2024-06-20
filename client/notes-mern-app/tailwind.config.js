@@ -12,7 +12,8 @@ export default {
         darkTextColor: "#D3D3D3",
       },
       boxShadow: {
-        custom: "0px 0px 2px 2px rgba(153,153,153,1)",
+        "custom-light": "3px 5px 5px -4px rgba(0,0,0,0.75)",
+        "custom-dark": "0 2px 4px rgba(0, 0, 0, 0.9)",
       },
       height: {
         "calc-100-minus-64": "calc(100vh - 64px)",

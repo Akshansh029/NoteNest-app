@@ -11,6 +11,7 @@ const CardNote = ({
   deleteNote,
   onPinNote,
   isDarkMode,
+  closeModal,
 }) => {
   return (
     <div
@@ -59,6 +60,7 @@ const CardNote = ({
           onClick={(e) => {
             e.stopPropagation();
             deleteNote();
+            closeModal();
           }}
         />
       </div>

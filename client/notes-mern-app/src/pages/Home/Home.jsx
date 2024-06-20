@@ -14,6 +14,7 @@ import NotesPng from "../../assets/NotesPng.png";
 import NoDataPng from "../../assets/no-data-png.png";
 import SelectLightPng from "../../assets/selectlight.png";
 import TagsCard from "../../components/TagsCard/TagsCard";
+import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 
 const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -78,6 +79,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
   const getUserInfo = async () => {
     try {
       const response = await axiosInstance.get("/get-user");
+      // console.log("Response of user info: ", response.data);
 
       if (response.data && response.data.user) {
         setUserInfo(response.data.user);
@@ -190,10 +192,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
   useEffect(() => {
     getAllNotes();
     getAllTags();
-    const user = localStorage.getItem("user");
-    if (user) {
-      getUserInfo();
-    }
+    getUserInfo();
   }, []);
 
   return (
@@ -215,8 +214,15 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         }`}
       >
         <div className="categories w-[15%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">
+          <ProfileInfo
+            isDarkMode={isDarkMode}
+            onLogout={() => {
+              navigate("/login");
+            }}
+            userInfo={userInfo}
+          />
           <h4
-            className={`text-sm font-semibold ${
+            className={`text-sm font-semibold mt-4 ${
               isDarkMode ? "text-darkTextColor" : ""
             }`}
           >

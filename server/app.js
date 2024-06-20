@@ -8,14 +8,14 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 const port = 5000;
-const mongoURI = process.env.MONGODB_URI;
 
 const User = require("./models/user.model");
 const Note = require("./models/note.model");
 const { authenticateToken } = require("./utilities");
 
 // Middleware
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({ origin: "*" }));
 
 // app.get("/", (req, res) => {
@@ -65,9 +65,8 @@ app.post("/create-account", async (req, res) => {
 
 //Get user API
 app.get("/get-user", authenticateToken, async (req, res) => {
-  // const user = req.user?.user?.user;
   const user = req.user;
-  console.log(user);
+  // console.log(user);
 
   if (!user || !user._id) {
     return res

@@ -207,10 +207,10 @@ app.put("/edit-note/:noteId", authenticateToken, async (req, res) => {
 //Get all notes API
 app.get("/get-all-notes", authenticateToken, async (req, res) => {
   const userId = req.user._id;
-  // console.log("User ID from token:", userId);
 
   try {
     const notes = await Note.find({ userId }).sort({ isPinned: -1 });
+    // console.log("Sorted Notes:", notes);
     return res.status(200).json({
       error: false,
       notes,
@@ -271,6 +271,25 @@ app.put("/pin-note/:noteId", authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error("Error pinning note:", error.message, error.stack);
+    res.status(500).json({ error: true, message: "Internal server error" });
+  }
+});
+
+//Get pinned notes API
+app.get("/get-pinned-notes", authenticateToken, async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const pinnedNotes = await Note.find({ userId, isPinned: true }).sort({
+      createdOn: -1,
+    });
+    return res.status(200).json({
+      error: false,
+      notes: pinnedNotes,
+      message: "Retrieved pinned notes successfully",
+    });
+  } catch (error) {
+    console.error("Error getting pinned notes", error.message, error.stack);
     res.status(500).json({ error: true, message: "Internal server error" });
   }
 });

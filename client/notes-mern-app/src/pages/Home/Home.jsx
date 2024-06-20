@@ -19,6 +19,7 @@ import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 const Home = ({ isDarkMode, setIsDarkMode }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
+  const [allPinnedNotes, setAllPinnedNotes] = useState([]);
   const [tags, setTags] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -106,6 +107,19 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     }
   };
 
+  //Get all pinned notes integration
+  const getPinnedNotes = async () => {
+    try {
+      const response = await axiosInstance.get("/get-pinned-notes");
+      if (response.data && response.data.notes) {
+        console.log("Pinned Notes:", response.data.notes);
+        setAllPinnedNotes(response.data.notes);
+      }
+    } catch (error) {
+      console.error("Error fetching pinned notes:", error);
+    }
+  };
+
   //Get all tags API integration
   const getAllTags = async () => {
     try {
@@ -172,10 +186,10 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
       });
 
       if (response.data && response.data.note) {
-        console.log("Note updated successfully:", response.data.note);
+        // console.log("Note updated successfully:", response.data.note);
         showToastMessage("Note updated successfully", "edit");
         getAllNotes();
-        closeModal();
+        getPinnedNotes();
       }
     } catch (error) {
       console.error("Error updating note:", error);
@@ -193,6 +207,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     getAllNotes();
     getAllTags();
     getUserInfo();
+    getPinnedNotes();
   }, []);
 
   return (
@@ -245,11 +260,17 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           )}
         </div>
         <div className="notes w-[25%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">
-          {allNotes.length > 0 ? (
-            <div className="flex flex-col gap-4">
-              {allNotes
-                .sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
-                .map((item) => (
+          {allPinnedNotes.length > 0 && (
+            <div className="mb-4">
+              <h4
+                className={`text-sm font-semibold ml-1 ${
+                  isDarkMode ? "text-darkTextColor" : ""
+                }`}
+              >
+                Pinned notes
+              </h4>
+              <div className="flex flex-col gap-4 mt-2">
+                {allPinnedNotes.map((item) => (
                   <CardNote
                     isDarkMode={isDarkMode}
                     key={item._id}
@@ -266,24 +287,57 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                     }}
                   />
                 ))}
+              </div>
             </div>
-          ) : (
-            <EmptyCard
-              isDarkMode={isDarkMode}
-              notesImg={isSearch ? NoDataPng : NotesPng}
-              message={
-                isSearch ? (
-                  <span className="flex items-center justify-center gap-1">
-                    Oops! Can't find any matches for your search.
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center gap-1">
-                    No notes yet! Click + to capture your thoughts
-                  </span>
-                )
-              }
-            />
           )}
+          <div className="">
+            <h4
+              className={`text-sm font-semibold ml-1 ${
+                isDarkMode ? "text-darkTextColor" : ""
+              }`}
+            >
+              All notes
+            </h4>
+            {allNotes.length > 0 ? (
+              <div className="flex flex-col gap-4 mt-2">
+                {allNotes
+                  .sort((a, b) => new Date(b.createdOn) - new Date(a.createdOn))
+                  .map((item) => (
+                    <CardNote
+                      isDarkMode={isDarkMode}
+                      key={item._id}
+                      title={item.title}
+                      date={item.createdOn}
+                      isPinned={item.isPinned}
+                      onEdit={() => handleEdit(item)}
+                      closeModal={closeModal}
+                      deleteNote={() => {
+                        deleteNote(item);
+                      }}
+                      onPinNote={() => {
+                        pinNote(item);
+                      }}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <EmptyCard
+                isDarkMode={isDarkMode}
+                notesImg={isSearch ? NoDataPng : NotesPng}
+                message={
+                  isSearch ? (
+                    <span className="flex items-center justify-center gap-1">
+                      Oops! Can't find any matches for your search.
+                    </span>
+                  ) : (
+                    <span className="flex items-center justify-center gap-1">
+                      No notes yet! Click + to capture your thoughts
+                    </span>
+                  )
+                }
+              />
+            )}
+          </div>
         </div>
         <div className="editor w-[60%] min-h-[100%] bg-transparent p-4 bg-slate-100">
           {openModal.isShown ? (

@@ -57,12 +57,12 @@ const Navbar = ({
       <div className="flex items-center gap-4">
         {userInfo && (
           <button
-            className={`transition-all ease-in rounded-[35px] w-[8.3rem] h-10 font-medium flex items-center justify-center gap-2 hover:ring-2 hover:bg-transparent hover:ring-primary bg-primary group`}
+            className={`transition-all duration-150 rounded-[35px] w-[8.3rem] h-10 font-medium flex items-center justify-center gap-2 bg-primary hover:bg-blue-600`}
             onClick={AddNote}
           >
             <div className="flex gap-2">
-              <FaPlus className="text-white text-[18px] group-hover:text-primary" />
-              <h4 className="text-sm font-medium text-white max-[768px]:display-none group-hover:text-primary">
+              <FaPlus className="text-white text-[18px] " />
+              <h4 className="text-sm font-medium text-white max-[768px]:display-none ">
                 Create New
               </h4>
             </div>

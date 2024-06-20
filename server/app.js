@@ -1,5 +1,4 @@
 require("dotenv").config();
-const { MongoClient, ObjectId } = require("mongodb");
 const config = require("./config.json");
 const mongoose = require("mongoose");
 const express = require("express");

@@ -87,3 +87,40 @@
 .react-quill-toolbar-dark .ql-toolbar .ql-picker-item.ql-selected {
   background-color: #555;
 }
+
+/* Tooltip container */
+.tooltip {
+  opacity: 0;
+  visibility: hidden;
+  width: 60px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 125%; /* Adjust this to position the tooltip below the button */
+  left: 50%;
+  margin-left: -30px;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  pointer-events: none; /* Ensures the tooltip doesn't block other interactions */
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: 100%; /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+/* Show the tooltip when hovering */
+.group:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}

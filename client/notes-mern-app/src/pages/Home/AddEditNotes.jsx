@@ -11,10 +11,11 @@ const AddEditNotes = ({
   type,
   noteData,
   getAllNotes,
+  getAllTags,
+  getPinnedNotes,
   closeModal,
   showToastMessage,
   isDarkMode,
-  getAllTags,
 }) => {
   const [title, setTitle] = useState(noteData?.title || "");
   const [content, setContent] = useState(noteData?.content || "");
@@ -50,6 +51,7 @@ const AddEditNotes = ({
         showToastMessage("Note added successfully", "add");
         getAllNotes();
         getAllTags();
+        getPinnedNotes();
         closeModal();
       }
     } catch (error) {
@@ -82,6 +84,7 @@ const AddEditNotes = ({
         showToastMessage("Note updated successfully", "edit");
         getAllNotes();
         getAllTags();
+        getPinnedNotes();
         closeModal();
       }
     } catch (error) {

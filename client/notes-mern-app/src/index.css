@@ -119,7 +119,7 @@
   border-color: transparent transparent #555 transparent;
 }
 
-/* Show the tooltip when hovering */
+/* Logout display when hovering */
 .group:hover .tooltip {
   opacity: 1;
   visibility: visible;

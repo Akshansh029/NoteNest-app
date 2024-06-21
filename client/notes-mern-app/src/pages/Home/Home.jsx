@@ -112,7 +112,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     try {
       const response = await axiosInstance.get("/get-pinned-notes");
       if (response.data && response.data.notes) {
-        console.log("Pinned Notes:", response.data.notes);
+        // console.log("Pinned Notes:", response.data.notes);
         setAllPinnedNotes(response.data.notes);
       }
     } catch (error) {
@@ -347,10 +347,11 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
               type={openModal.type}
               noteData={openModal.data}
               getAllNotes={getAllNotes}
+              getAllTags={getAllTags}
+              getPinnedNotes={getPinnedNotes}
               closeModal={closeModal}
               showToastMessage={showToastMessage}
               isDarkMode={isDarkMode}
-              getAllTags={getAllTags}
               key={selectedNote ? selectedNote._id : "add"}
             />
           ) : (

@@ -18,7 +18,7 @@ const App = () => {
             }
           />
           <Route
-            path="/login"
+            path="/"
             element={
               <Login isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} />
             }

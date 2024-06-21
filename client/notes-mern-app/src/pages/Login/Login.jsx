@@ -30,7 +30,7 @@ const Login = ({ isDarkMode, setIsDarkMode }) => {
 
     //Login API integration
     try {
-      const response = await axiosInstance.post("/login", {
+      const response = await axiosInstance.post("/", {
         email: email,
         password: password,
       });

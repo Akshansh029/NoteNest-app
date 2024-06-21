@@ -116,6 +116,7 @@ const AddEditNotes = ({
       editNote();
     } else {
       addNewNote();
+      document.location.reload();
     }
   };
 

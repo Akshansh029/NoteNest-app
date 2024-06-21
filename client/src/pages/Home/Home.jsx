@@ -147,6 +147,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
         showToastMessage("Note deleted successfully", "delete");
         getAllNotes();
         getAllTags();
+        getPinnedNotes();
       }
     } catch (error) {
       console.error("Error updating note:", error);

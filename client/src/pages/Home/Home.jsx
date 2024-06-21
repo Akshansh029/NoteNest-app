@@ -88,7 +88,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
     } catch (error) {
       if (error.response.status === 401) {
         localStorage.clear();
-        navigate("/login");
+        navigate("/");
       }
     }
   };
@@ -233,7 +233,7 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
           <ProfileInfo
             isDarkMode={isDarkMode}
             onLogout={() => {
-              navigate("/login");
+              navigate("/");
             }}
             userInfo={userInfo}
           />
@@ -258,7 +258,13 @@ const Home = ({ isDarkMode, setIsDarkMode }) => {
                 ))}
             </div>
           ) : (
-            <p>No tags yet!</p>
+            <p
+              className={`text-lg mt-2 ${
+                isDarkMode ? "text-darkTextColor" : ""
+              }`}
+            >
+              No tags yet!
+            </p>
           )}
         </div>
         <div className="notes w-[25%] min-h-[100%] bg-transparent border-gray-700 border-r-[1px] p-4 overflow-y-auto hide-scrollbar">

@@ -77,7 +77,7 @@ const Signup = ({ isDarkMode, setIsDarkMode }) => {
           "edit"
         );
         setTimeout(() => {
-          navigate("/login");
+          navigate("/");
         }, 3000);
       }
     } catch (error) {
@@ -152,7 +152,7 @@ const Signup = ({ isDarkMode, setIsDarkMode }) => {
               }`}
             >
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 underline">
+              <Link to="/" className="text-blue-600 underline">
                 Login
               </Link>
             </p>
